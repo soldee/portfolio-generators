@@ -1,0 +1,39 @@
+name: Update LeetCode Stats SVG
+
+# Controls when the workflow will run
+on:
+  schedule:
+      - cron: '0 0 * * 0' # Sunday at 00:00 UTC
+
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "update-stats"
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate SVG Image
+        env:
+          LEETCODE_USERNAME: ${{ vars.LEETCODE_USERNAME }}
+        run: node leetcode-svg-gen.js
+
+      - name: Commit and Push Image
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add output/leetcode-stats.svg
+          git diff-index --quiet HEAD || git commit -m "chore: auto-update leetcode stats svg"
+          git push
