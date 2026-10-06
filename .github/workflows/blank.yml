@@ -27,7 +27,7 @@ jobs:
 
       - name: Generate SVG Image
         env:
-          LEETCODE_USERNAME: ${{ vars.LEETCODE_USERNAME }}
+          LEETCODE_USERNAME: ${{ secrets.LEETCODE_USERNAME }}
         run: node src/leetcode-svg-gen.js
 
       - name: Commit and Push Image
