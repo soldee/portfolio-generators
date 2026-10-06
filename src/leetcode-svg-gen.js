@@ -80,7 +80,6 @@ function createSVG({ matchedUser, userContestRanking }) {
     .map(l => l.languageName)
     .join(' · ') || 'N/A';
 
-  // Fallback Logic: Contest Rating -> Global Profile Rank -> Unrated
   let rankText = 'Unrated';
   if (userContestRanking && userContestRanking.rating) {
     const rating = Math.round(userContestRanking.rating);
@@ -92,7 +91,8 @@ function createSVG({ matchedUser, userContestRanking }) {
     rankText = `Global Rank #${matchedUser.profile.ranking.toLocaleString()}`;
   }
 
-  return `<svg width="420" height="200" viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  // SVG canvas: 452x232 (allows 16px outer margin on all sides of the 420x200 card)
+  return `<svg width="452" height="232" viewBox="0 0 452 232" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
     .card { fill: #0d1117; rx: 12px; stroke: #30363d; stroke-width: 1px; }
     .title { font: bold 16px 'Segoe UI', Ubuntu, Roboto, sans-serif; fill: #ffa116; }
@@ -106,37 +106,40 @@ function createSVG({ matchedUser, userContestRanking }) {
     .divider { stroke: #21262d; stroke-width: 1px; }
   </style>
 
-  <rect width="100%" height="100%" class="card" />
+  <!-- 16px Outer Padding Group -->
+  <g transform="translate(16, 16)">
+    <rect width="420" height="200" class="card" />
 
-  <!-- Header -->
-  <text x="24" y="38" class="title">LeetCode Stats</text>
-  <text x="396" y="38" text-anchor="end" class="subhead">@${matchedUser.username}</text>
+    <!-- Header -->
+    <text x="24" y="38" class="title">LeetCode Stats</text>
+    <text x="396" y="38" text-anchor="end" class="subhead">@${matchedUser.username}</text>
 
-  <!-- Rank / Rating & Active Days -->
-  <text x="24" y="66" class="value">${rankText}</text>
-  <text x="396" y="66" text-anchor="end" class="subhead">${activeDays} Days Active</text>
+    <!-- Rank / Rating & Active Days -->
+    <text x="24" y="66" class="value">${rankText}</text>
+    <text x="396" y="66" text-anchor="end" class="subhead">${activeDays} Days Active</text>
 
-  <line x1="24" y1="82" x2="396" y2="82" class="divider" />
+    <line x1="24" y1="82" x2="396" y2="82" class="divider" />
 
-  <!-- Solved Count -->
-  <text x="24" y="110" class="label">Total Solved:</text>
-  <text x="110" y="110" class="value">${total}</text>
+    <!-- Solved Count -->
+    <text x="24" y="110" class="label">Total Solved:</text>
+    <text x="110" y="110" class="value">${total}</text>
 
-  <!-- Difficulty Pills -->
-  <g transform="translate(24, 124)">
-    <rect x="0" y="0" width="115" height="26" rx="6" fill="#00b8a3" fill-opacity="0.15" />
-    <text x="57" y="17" text-anchor="middle" class="stat-pill easy">Easy ${easy}</text>
+    <!-- Difficulty Pills -->
+    <g transform="translate(24, 124)">
+      <rect x="0" y="0" width="115" height="26" rx="6" fill="#00b8a3" fill-opacity="0.15" />
+      <text x="57" y="17" text-anchor="middle" class="stat-pill easy">Easy ${easy}</text>
 
-    <rect x="123" y="0" width="115" height="26" rx="6" fill="#ffc01e" fill-opacity="0.15" />
-    <text x="180" y="17" text-anchor="middle" class="stat-pill medium">Med ${medium}</text>
+      <rect x="123" y="0" width="115" height="26" rx="6" fill="#ffc01e" fill-opacity="0.15" />
+      <text x="180" y="17" text-anchor="middle" class="stat-pill medium">Med ${medium}</text>
 
-    <rect x="246" y="0" width="126" height="26" rx="6" fill="#ef4743" fill-opacity="0.15" />
-    <text x="309" y="17" text-anchor="middle" class="stat-pill hard">Hard ${hard}</text>
+      <rect x="246" y="0" width="126" height="26" rx="6" fill="#ef4743" fill-opacity="0.15" />
+      <text x="309" y="17" text-anchor="middle" class="stat-pill hard">Hard ${hard}</text>
+    </g>
+
+    <!-- Languages -->
+    <text x="24" y="178" class="label">Top Languages:</text>
+    <text x="135" y="178" class="value">${topLangs}</text>
   </g>
-
-  <!-- Languages -->
-  <text x="24" y="178" class="label">Top Languages:</text>
-  <text x="135" y="178" class="value">${topLangs}</text>
 </svg>`;
 }
 
