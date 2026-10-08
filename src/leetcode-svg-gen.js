@@ -18,6 +18,7 @@ const GRAPHQL_QUERY = `
         }
       }
       userCalendar {
+        streak
         totalActiveDays
       }
       languageProblemCount {
@@ -37,11 +38,12 @@ async function fetchLeetCodeStats() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Referer': 'https://leetcode.com',
+      'Referer': 'https://leetcode.com'
     },
     body: JSON.stringify({
       query: GRAPHQL_QUERY,
-      variables: { username: USERNAME }
+      variables: { username: USERNAME },
+      operationName: 'getPortfolioLeetCodeStats'
     })
   });
 
@@ -72,7 +74,13 @@ function createSVG({ matchedUser, userContestRanking }) {
   const medium = getCount('Medium');
   const hard = getCount('Hard');
 
+  const streak = matchedUser.userCalendar?.streak || 0;
   const activeDays = matchedUser.userCalendar?.totalActiveDays || 0;
+
+  // Format activity text with streak
+  const activityText = streak > 0 
+    ? `🔥 ${streak} Day Streak · ${activeDays}d Active`
+    : `${activeDays} Days Active`;
 
   const topLangs = (matchedUser.languageProblemCount || [])
     .sort((a, b) => b.problemsSolved - a.problemsSolved)
@@ -91,7 +99,6 @@ function createSVG({ matchedUser, userContestRanking }) {
     rankText = `Global Rank #${matchedUser.profile.ranking.toLocaleString()}`;
   }
 
-  // SVG canvas: 452x232 (allows 16px outer margin on all sides of the 420x200 card)
   return `<svg width="452" height="232" viewBox="0 0 452 232" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
     .card { fill: #0d1117; rx: 12px; stroke: #30363d; stroke-width: 1px; }
@@ -106,7 +113,7 @@ function createSVG({ matchedUser, userContestRanking }) {
     .divider { stroke: #21262d; stroke-width: 1px; }
   </style>
 
-  <!-- 16px Outer Padding Group -->
+  <!-- 16px Outer Padding Margin -->
   <g transform="translate(16, 16)">
     <rect width="420" height="200" class="card" />
 
@@ -114,9 +121,9 @@ function createSVG({ matchedUser, userContestRanking }) {
     <text x="24" y="38" class="title">LeetCode Stats</text>
     <text x="396" y="38" text-anchor="end" class="subhead">@${matchedUser.username}</text>
 
-    <!-- Rank / Rating & Active Days -->
+    <!-- Rank / Rating & Streak / Active Days -->
     <text x="24" y="66" class="value">${rankText}</text>
-    <text x="396" y="66" text-anchor="end" class="subhead">${activeDays} Days Active</text>
+    <text x="396" y="66" text-anchor="end" class="subhead">${activityText}</text>
 
     <line x1="24" y1="82" x2="396" y2="82" class="divider" />
 

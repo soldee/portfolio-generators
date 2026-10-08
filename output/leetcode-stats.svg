@@ -12,7 +12,7 @@
     .divider { stroke: #21262d; stroke-width: 1px; }
   </style>
 
-  <!-- 16px Outer Padding Group -->
+  <!-- 16px Outer Padding Margin -->
   <g transform="translate(16, 16)">
     <rect width="420" height="200" class="card" />
 
@@ -20,26 +20,26 @@
     <text x="24" y="38" class="title">LeetCode Stats</text>
     <text x="396" y="38" text-anchor="end" class="subhead">@soldee</text>
 
-    <!-- Rank / Rating & Active Days -->
-    <text x="24" y="66" class="value">Global Rank #4,209,515</text>
-    <text x="396" y="66" text-anchor="end" class="subhead">17 Days Active</text>
+    <!-- Rank / Rating & Streak / Active Days -->
+    <text x="24" y="66" class="value">Global Rank #4,051,180</text>
+    <text x="396" y="66" text-anchor="end" class="subhead">🔥 4 Day Streak · 19d Active</text>
 
     <line x1="24" y1="82" x2="396" y2="82" class="divider" />
 
     <!-- Solved Count -->
     <text x="24" y="110" class="label">Total Solved:</text>
-    <text x="110" y="110" class="value">24</text>
+    <text x="110" y="110" class="value">26</text>
 
     <!-- Difficulty Pills -->
     <g transform="translate(24, 124)">
       <rect x="0" y="0" width="115" height="26" rx="6" fill="#00b8a3" fill-opacity="0.15" />
-      <text x="57" y="17" text-anchor="middle" class="stat-pill easy">Easy 13</text>
+      <text x="57" y="17" text-anchor="middle" class="stat-pill easy">Easy 14</text>
 
       <rect x="123" y="0" width="115" height="26" rx="6" fill="#ffc01e" fill-opacity="0.15" />
       <text x="180" y="17" text-anchor="middle" class="stat-pill medium">Med 10</text>
 
       <rect x="246" y="0" width="126" height="26" rx="6" fill="#ef4743" fill-opacity="0.15" />
-      <text x="309" y="17" text-anchor="middle" class="stat-pill hard">Hard 1</text>
+      <text x="309" y="17" text-anchor="middle" class="stat-pill hard">Hard 2</text>
     </g>
 
     <!-- Languages -->
